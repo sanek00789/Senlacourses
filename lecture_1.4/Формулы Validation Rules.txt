@@ -1,0 +1,4 @@
+1. FLOOR ((TODAY() - Birthdate__c) / 365.25)
+2. Tourist Custom Field/ 	Data Type: Roll-Up Summary/	Summary Type: COUNT/	Summarized Object: Flight	 
+3. Tourist__r.Age__c < Trip__r.Minimum_Age__c
+4. (TODAY() > Trip__r.Start_Date__c) ||  ISPICKVAL(Status__c , "Past"	 

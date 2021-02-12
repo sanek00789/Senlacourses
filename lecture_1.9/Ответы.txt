@@ -1,0 +1,20 @@
+1.	Select Name, Start_Date__c From Trip__c WHERE CALENDAR_YEAR(Start_Date__c) = 2020
+
+2.	Select Name From Tourist__c WHERE Name = 'Джон'
+
+3.	Select Name, Age__c From Tourist__c WHERE Age__c IN (20, 22, 24)
+
+4.	SELECT Trip__r.Start_Date__c, Name, Trip__r.Name, Tourist__r.Name, Tourist__r.Age__c FROM Flight__c
+
+5.	SELECT Name, Age__c, (SELECT Trip__r.Start_Date__c, Name FROM Flights__r)  FROM Tourist__c
+
+6.	SELECT Name, Age__c FROM Tourist__c WHERE Upcoming_Flights_Count__c = 0
+
+7.
+
+8.	SELECT Trip__r.Start_Date__c, Name, FROM Flight__c 
+    WHERE CALENDAR_YEAR(Trip__r.Start_Date__c) = 2020 AND (Tourist__r.Age__c > 20 AND Tourist__r.Age__c < 30) AND Tourist__r.Name LIKE  'B%'
+
+
+
+

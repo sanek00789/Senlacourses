@@ -10,7 +10,7 @@
 
 6.	SELECT Name, Age__c FROM Tourist__c WHERE Upcoming_Flights_Count__c = 0
 
-7.
+7.  SELECT Name, Age__c, (SELECT Trip__r.Start_Date__c From Flights__r) FROM Tourist__c WHERE (SELECT Trip__r.Start_Date__c From Flights__r WHERE CALENDAR_YEAR(Trip__r.Start_Date__c) = 2020)
 
 8.	SELECT Trip__r.Start_Date__c, Name, FROM Flight__c 
     WHERE CALENDAR_YEAR(Trip__r.Start_Date__c) = 2020 AND (Tourist__r.Age__c > 20 AND Tourist__r.Age__c < 30) AND Tourist__r.Name LIKE  'B%'

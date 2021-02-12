@@ -1,4 +1,4 @@
-1.	SELECT Trip__r.Start_Date__c, Name FROM Flight__c
+1.	SELECT Trip__r.Start_Date__c, Name FROM Flight__c WHERE CALENDAR_YEAR(Trip__r.Start_Date__c) = 2020
 
 2.	Select Name From Tourist__c WHERE Name = 'Джон'
 

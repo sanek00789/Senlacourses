@@ -1,0 +1,6 @@
+Integer a;
+Integer b;
+for (a = 1; a <= 9; a++) {
+    b = a * 3;
+    System.debug('3' + '*' + a + '=' + b);
+}

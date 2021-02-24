@@ -1,0 +1,8 @@
+List<Integer> ListNumber = new List<Integer> {1, 2, 5, 14, 9, 4, 22};
+List<Integer> index = new List<Integer> ();
+for (Integer i = 0; i < ListNumber.size(); i++) {
+    if (math.mod(ListNumber[i], 2) == 0) {
+        index.add(i);
+    }
+}
+System.debug(index);

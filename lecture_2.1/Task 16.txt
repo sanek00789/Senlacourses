@@ -1,0 +1,9 @@
+Long numToCheck = 910019;
+Integer i;
+String n = numToCheck.format(); //преобразует тип Long в тип String
+String x = n.reverse();			//возвращает строку в обратном последовательности
+if (n == x) {					//сравнивает два значения
+	System.debug('Number is Palindrome');
+} else {
+	System.debug('Number is not a Palindrome');
+	}

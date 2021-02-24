@@ -1,0 +1,7 @@
+Integer n = 5;
+Integer summ = 0;
+for (Integer i = 1; i <= n; i++) {
+    summ = summ + i;
+}
+System.debug('n = '+ n);
+System.debug('Summa chisel ot 1 do n = ' + summ);

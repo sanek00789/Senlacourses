@@ -1,0 +1,8 @@
+Integer n = 100;
+Integer i;
+for (i = 1; i < n; i++) {
+    if (math.mod(i, i) == 0 && i > 1) {
+        if (!(math.mod(i, 2) == 0 || math.mod(i, 3) == 0))
+        	System.debug(i);   
+    }
+}

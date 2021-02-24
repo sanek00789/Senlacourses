@@ -1,0 +1,12 @@
+Integer n = 5000;
+Integer i = 1;
+Integer sum = 0;
+Integer sum1 = 0;
+while (i < n) {    
+    if (sum < n) {
+    	System.debug(sum);    
+    }
+    sum = sum1 + i;    
+    sum1 = i;
+    i = sum;  
+}

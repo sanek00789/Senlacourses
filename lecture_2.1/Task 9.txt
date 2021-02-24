@@ -1,0 +1,3 @@
+String [] arrayWord = new String [] {'Lets', 'learn', 'something', 'new', 'today'};
+System.debug(arrayWord.get(0));
+System.debug(arrayWord.get(arrayWord.size()-1));

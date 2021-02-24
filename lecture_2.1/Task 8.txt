@@ -1,0 +1,16 @@
+List<Integer> massiv = new List<Integer> {5, 6, 11, 1, 4, -12};
+System.debug(massiv);
+System.debug('Chetnye chisla: ');
+Integer i = 0;
+for (i=0; i < massiv.size() ; i++) {
+    if (math.mod(massiv[i],2) == 0) {
+        System.debug(massiv[i]);
+ }    
+}
+System.debug('Nechetnoe chislo: ');
+i = 0;
+for (i=0; i < massiv.size() ; i++) {
+    if (math.mod(massiv[i],2) != 0) {
+        System.debug(massiv[i]);
+    }     
+}

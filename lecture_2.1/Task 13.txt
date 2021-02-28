@@ -1,0 +1,14 @@
+String words = 'Lets learn something new today';
+List<String> arrayWord = words.split(' ');				//разбиваем фразу на слова и создаем коллекцию
+Map<Integer, String> taskMap= new Map <Integer, String>(); 		//объявляем новую коллекцию
+
+for (Integer i = 0; i < arrayWord.size(); i++) {
+    Integer leng = arrayWord[i].length(); 
+    if(taskMap.containsKey(leng)){					//проверяем пустое ли значение в коллекции с ключем определенной длины
+        taskMap.put(leng,taskMap.get(leng) + ', ' + arrayWord[i]); 
+    } else{
+            taskMap.put(leng, arrayWord[i]);
+        }
+    }   
+    
+System.debug(taskMap);

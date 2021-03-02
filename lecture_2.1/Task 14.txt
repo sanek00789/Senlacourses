@@ -1,8 +1,13 @@
-Integer n = 100;
-Integer i;
-for (i = 1; i < n; i++) {
-    if (math.mod(i, i) == 0 && i > 1) {
-        if (!(math.mod(i, 2) == 0 || math.mod(i, 3) == 0))
-        	System.debug(i);   
-    }
+Integer inputNum = 30;
+
+for (Integer i = 2; i < inputNum; i++) {
+	Integer k = 0;
+	for (Integer j = 1; j <= i; j++) {
+		if (math.mod(i, j) == 0) {
+		k++;
+		}
+	}
+	if (k == 2) {
+		System.debug(i);
+	}
 }

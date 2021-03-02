@@ -1,6 +1,5 @@
-Integer a;
-Integer b;
-for (a = 1; a <= 9; a++) {
-    b = a * 3;
-    System.debug('3' + '*' + a + '=' + b);
+Integer result;
+for (Integer coefficient = 1; coefficient <= 10; coefficient++) {
+	result = coefficient * 3;
+	System.debug('3' + ' * ' + coefficient + ' = ' + result);
 }

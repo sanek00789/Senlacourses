@@ -1,11 +1,11 @@
 String words = 'Lets learn something new today';
-List<String> arrayWord = words.split(' ');			//разбиваем фразу на слова и создаем коллекцию
-Map<Integer, Integer> taskMap= new Map <Integer, Integer>(); //объявляем новую коллекцию
+List < String > arrayWord = words.split(' ');
+Map < Integer, Integer > taskMap = new Map < Integer, Integer > ();
 for (Integer i = 0; i < arrayWord.size(); i++) {
-    	Integer length = taskMap.get((arrayWord.get(i)).length());		//переменной присваевается значение длины слова
-       If (length == null) {			//проверяем пустое ли значение длинны
-        length = 0;
-    }
-      taskMap.put((arrayWord.get(i)).length(), length+1);		//добавляем элемент в коллекцию     
+	Integer length = taskMap.get((arrayWord.get(i)).length()); //переменной присваевается значение длины слова
+	If(length == null) { //проверяем пустое ли значение длинны
+		length = 0;
+	}
+	taskMap.put((arrayWord.get(i)).length(), length + 1);
 }
 System.debug(taskMap);

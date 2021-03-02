@@ -1,7 +1,8 @@
-String[] ArrayWord = new String[] {'Lets', 'learn', 'something', 'new', 'today'};
-    for (Integer i = 0; i < ArrayWord.size(); i++) {
+String phrase = 'Lets learn something new today';
+String [] arrayWords = phrase.split(' ');
+    for (Integer i = 0; i < ArrayWords.size(); i++) {
         if (math.mod(i, 2) == 0) {
-            System.debug(ArrayWord[i]);
+            System.debug(ArrayWords[i]);
         }    
     }
     

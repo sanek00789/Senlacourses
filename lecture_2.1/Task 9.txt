@@ -1,3 +1,4 @@
-String [] arrayWord = new String [] {'Lets', 'learn', 'something', 'new', 'today'};
-System.debug(arrayWord.get(0));
-System.debug(arrayWord.get(arrayWord.size()-1));
+String phrase = 'Lets learn something new today';
+String [] arrayWords = phrase.split(' ');
+System.debug(arrayWords.get(0));
+System.debug(arrayWords.get(arrayWords.size()-1));

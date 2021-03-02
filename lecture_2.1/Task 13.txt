@@ -1,6 +1,6 @@
 String words = 'Lets learn something new today';
-List<String> arrayWord = words.split(' ');				//разбиваем фразу на слова и создаем коллекцию
-Map<Integer, String> taskMap= new Map <Integer, String>(); 		//объявляем новую коллекцию
+List<String> arrayWord = words.split(' ');				
+Map<Integer, String> taskMap= new Map <Integer, String>(); 		
 
 for (Integer i = 0; i < arrayWord.size(); i++) {
     Integer leng = arrayWord[i].length(); 

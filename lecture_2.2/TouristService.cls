@@ -1,4 +1,5 @@
 public class TouristService {
+    
     public static void markDuplicates(List<Tourist__c> newTourists) {       
         List<Tourist__c> insertList = new List<Tourist__c> {};
         Set<Tourist__c> revisedTourist = new Set<Tourist__c> {};    

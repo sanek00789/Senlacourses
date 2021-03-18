@@ -1,6 +1,6 @@
 public class NumberUtility {
     
-    public static List<Integer> sampleNumber (Integer inputNum) {
+    public static List<Integer> getPrimeNumbers (Integer inputNum) {
         List<Integer> results = new List<Integer> ();
         
         for (Integer i = 2; i < inputNum; i++) {
@@ -17,7 +17,7 @@ public class NumberUtility {
         return results;
     }
     
-    public static List<Integer> numbersFibanachi (Integer inputNum) {
+    public static List<Integer> getFibanachiNumbers (Integer inputNum) {
         List<Integer> listResults = new List<Integer> ();
         Integer i = 1;
         Integer sum = 0;
@@ -33,7 +33,7 @@ public class NumberUtility {
         return listResults;
     }
     
-    public static Boolean palindrom (Integer numToCheck) {        
+    public static Boolean isPalindrom (Integer numToCheck) {        
         String varText = numToCheck.format();
         String revNumber = varText.reverse();
         if (varText == revNumber) {            

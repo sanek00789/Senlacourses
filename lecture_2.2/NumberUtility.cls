@@ -35,11 +35,7 @@ public class NumberUtility {
     
     public static Boolean isPalindrom (Integer numToCheck) {        
         String varText = numToCheck.format();
-        String revNumber = varText.reverse();
-        if (varText == revNumber) {            
-            return true;
-        } else {            
-            return false;
-        }        
+        String revNumber = varText.reverse();        
+        return varText == revNumber;        
     }
 }

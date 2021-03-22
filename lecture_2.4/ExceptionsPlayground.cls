@@ -1,17 +1,17 @@
-public class ExceptionHw {
+public class ExceptionsPlayground {
     
     public class CustomException extends Exception {}
     
-    public static void customException (Integer a, Integer b) {
+    public static void generateCustomException (Integer a, Integer b) {
         try {
             if (a == b) throw new CustomException('Сannot be equal');
         } catch(CustomException e) {
-            throw e;
+            throw e; 
             
         }        
     }
     
-    public static void standartException() {
+    public static void generateRegularException() {
         Trip__c tripTest = new Trip__c ();
         tripTest = [
             SELECT Name 
@@ -19,18 +19,18 @@ public class ExceptionHw {
         ];      
     }
     
-    public static void withoutException() {
+    public static void handleExceptions() {
         try {            
-            ExceptionHw.standartException();
+            ExceptionsPlayground.generateRegularException();
         }
         catch (QueryException qe) {
             System.debug(qe.getMessage());
             System.debug('Сaught a standard exception');
         }
         try {            
-            ExceptionHw.customException(5, 5);
+            ExceptionsPlayground.generateCustomException(5, 5);
         }
-        catch (customException ce) {
+        catch (CustomException ce) {
             
             System.debug('Сaught a custom exception');
         }

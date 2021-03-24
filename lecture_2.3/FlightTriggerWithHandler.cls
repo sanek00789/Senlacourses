@@ -1,5 +1,6 @@
-public class FlightTriggerWithHandler {
-    public static void onBeforeInsert (List<Flight__c> newFlight) {
+public class FlightTriggerWithHandler {       
+    
+    public static void onBeforeInsert (List<Flight__c> newFlight) {   
         
         for (Flight__c flight : newFlight) {
             Tourist__c touristToFlight = [
@@ -20,8 +21,3 @@ public class FlightTriggerWithHandler {
         }        
     }
 }
-
-/*(TODAY() > Trip__r.Start_Date__c) || ISPICKVAL(Status__c , "Past")
-The flight has already departed
-Tourist__r.Age__c < Trip__r.Minimum_Age__c
-Insufficient minimum age*/

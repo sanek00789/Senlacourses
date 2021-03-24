@@ -30,7 +30,7 @@ public class TouristManager {
         return flights;
     }
     
-    public static void getTouristsWithFlights () {
+    public static void getWithFlights () {
         List<Tourist__c> tourists = [
             SELECT Name, 
             	   Age__c, 
@@ -39,7 +39,7 @@ public class TouristManager {
         ];        
     }
     
-    public static void getTouristsWithoutFlights () {
+    public static void getWithoutFlights () {
         List<Tourist__c> tourists = [
             SELECT Name, 
             	   Age__c 
@@ -48,7 +48,7 @@ public class TouristManager {
         ];
     }
     
-    public static List<Tourist__c> getTouristsByEmail (List<Tourist__c> newTourists) {
+    public static List<Tourist__c> getByEmail (List<Tourist__c> newTourists) {
         Set<String> setName = new Set<String>();
         Set<String> setEmail = new Set<String>();
         
@@ -56,7 +56,7 @@ public class TouristManager {
             setName.add(tourist.Name);
             setEmail.add(tourist.Email__c);
         }        
-        Set<Tourist__c> revisedTourist = new Set<Tourist__c> {};    
+        List<Tourist__c> revisedTourist = new List<Tourist__c> {};    
            List<Tourist__c> recordsTourists = [
                 SELECT Name,
                 		Email__c,
@@ -64,5 +64,13 @@ public class TouristManager {
                 FROM Tourist__c 
                 WHERE Name =: setName AND Email__c =: setEmail];
         return recordsTourists;
+    }
+    
+    public static List<Tourist__c> getByActive () {
+        List<Tourist__c> listTourists = [
+            SELECT Id, 
+            		Active__c 
+            FROM Tourist__c];
+        return listTourists;        
     }
 }

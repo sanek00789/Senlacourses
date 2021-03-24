@@ -3,13 +3,8 @@ public class TouristTriggerHandler {
     
     public static void onAfterUpdate (Map<id, Tourist__c> newTourists) {        
         List<Tourist__c> listNewTourist = newTourists.values();
-        List<Flight__c> listFlights = [
-            SELECT Tourist__c, Status__c FROM Flight__c
-        ];
-        List<Tourist__c> listTourists = [
-            SELECT Id, Active__c 
-            FROM Tourist__c
-        ];
+        List<Flight__c> listFlights = FlightManager.getByStatus();
+        List<Tourist__c> listTourists = TouristManager.getByActive();
         List<Flight__c> listFlightToUpdate = new List<Flight__c> ();
         
         for (Tourist__c newtour : listNewTourist) {

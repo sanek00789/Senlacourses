@@ -1,23 +1,27 @@
 public class FlightTriggerWithHandler {       
     
-    public static void onBeforeInsert (List<Flight__c> newFlight) {   
-        
+    public static void onBeforeInsert (Set<Flight__c> newFlight) {   
+        List<Tourist__c> tourists = TouristManager.getByAges(newFlight);
+        List<Trip__c> trips = TripManager.getByStartDate(newFlight);
+       
         for (Flight__c flight : newFlight) {
-            Tourist__c touristToFlight = [
-                SELECT Age__c 
-                FROM Tourist__c 
-                WHERE id =: flight.Tourist__c];
-            Trip__c tripToFlight = [
-                SELECT Minimum_Age__c, Start_Date__c 
-                FROM Trip__c 
-                WHERE id =: flight.Trip__c];
-            if (touristToFlight.Age__c < tripToFlight.Minimum_Age__c) {
-                flight.addError('Insufficient minimum age');
-            }
-            if (flight.Status__c == 'Past' && date.today() > tripToFlight.Start_Date__c) {
-                flight.addError('The flight has already departed');
-                flight.Status__c.addError('The flight has already departed');
-            }
-        }        
+            
+            for (Tourist__c tourist : tourists) {
+                if (flight.Tourist__c == tourist.Id) {
+                    
+                    for (Trip__c trip : trips) {
+                        if (flight.Trip__c == trip.Id) {
+                            if (tourist.Age__c < trip.Minimum_Age__c) {
+                                flight.addError(Constans.errorMinAge);
+                            }
+                            if (flight.Status__c == 'Past' || date.today() > trip.Start_Date__c) {
+                                flight.addError(Constans.errorFlightStatus);
+                                flight.Status__c.addError(Constans.errorFlightStatus);
+                            }
+                        }                        
+                    }                    
+                }
+            }       
+        }
     }
 }

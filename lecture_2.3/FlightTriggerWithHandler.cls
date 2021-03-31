@@ -1,4 +1,4 @@
-public class FlightTriggerWithHandler {       
+public class FlightTriggerHandler {       
     
     public static void onBeforeInsert (Set<Flight__c> newFlight) {   
         List<Tourist__c> tourists = TouristManager.getByAges(newFlight);

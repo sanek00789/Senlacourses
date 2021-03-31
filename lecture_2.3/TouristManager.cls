@@ -48,25 +48,17 @@ public class TouristManager {
         ];
     }
     
-    public static List<Tourist__c> getByEmail (List<Tourist__c> newTourists) {
-        Set<String> setName = new Set<String>();
-        Set<String> setEmail = new Set<String>();
-        
-        for (Tourist__c  tourist : newTourists) {
-            setName.add(tourist.Name);
-            setEmail.add(tourist.Email__c);
-        }        
-        List<Tourist__c> revisedTourist = new List<Tourist__c> {};    
-           List<Tourist__c> recordsTourists = [
-                SELECT Name,
-                		Email__c,
-                		IsDuplicate__c 
-                FROM Tourist__c 
-                WHERE Name =: setName AND Email__c =: setEmail];
+    public static List<Tourist__c> getEmail (Set<String> names, Set<String> emails) {                   
+        List<Tourist__c> recordsTourists = [
+            SELECT Name,
+            Email__c,
+            IsDuplicate__c 
+            FROM Tourist__c 
+            WHERE Name =: names AND Email__c =: emails];
         return recordsTourists;
     }
     
-    public static List<Tourist__c> getByActive () {
+    public static List<Tourist__c> getActive () {
         List<Tourist__c> listTourists = [
             SELECT Id, 
             		Active__c 
@@ -74,17 +66,12 @@ public class TouristManager {
         return listTourists;        
     }
     
-    public static List<Tourist__c> getByAges (Set<Flight__c> newFlights) {
-        Set<Id> tourists = new Set<Id>();        
-        
-        for (Flight__c  flight : newFlights) {
-            tourists.add(flight.Tourist__c);           
-        }  
+    public static List<Tourist__c> getByIds (Set<Id> touristIds) {
         List<Tourist__c> recordsTourists = [
             SELECT Name,
-            		Age__c 
+            Age__c 
             FROM Tourist__c 
-            WHERE Id IN : tourists];
+            WHERE Id IN : touristIds];
         return recordsTourists;
     }
 }

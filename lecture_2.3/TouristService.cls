@@ -1,26 +1,32 @@
 public class TouristService {
     
-    public static void markDuplicates(List<Tourist__c> newTourists) {       
-        List<Tourist__c> recordsTourists = TouristManager.getByEmail(newTourists);        
-        List<Tourist__c> revisedTourist = new List<Tourist__c> ();
+    public static void markDuplicates(List<Tourist__c> newTourists) {          
+        if (newTourists == null || newTourists.isEmpty()) return;
+        Set<String> names =  new Set<String> ();
+        Set<String> emails = new Set<String> ();
+        
+        for (Tourist__c tour : newTourists) {
+            names.add(tour.Name);
+            emails.add(tour.Email__c);
+        }        
+        List<Tourist__c> recordsTourists = TouristManager.getEmail(names, emails);        
+        List<Tourist__c> revisedTourists = new List<Tourist__c> ();
         List<Tourist__c> insertList = new List<Tourist__c> ();
-        if (recordsTourists.isEmpty() != true) {
+        if (!recordsTourists.isEmpty()) {
             
-            for (Tourist__c a : newTourists) {
-                String nameTourist = a.Name;
-                String email = a.Email__c;
+            for (Tourist__c newTourist : newTourists) {
                 
-                for (Tourist__c b : recordsTourists) {
-                    if (b.Name == nameTourist && b.Email__c == email) {
-                        a.IsDuplicate__c = true;
-                        revisedTourist.add(a);
+                for (Tourist__c tourist : recordsTourists) {
+                    Boolean isSameName = (tourist.Name == newTourist.Name);
+                    Boolean isSameEmail = (tourist.Email__c == newTourist.Email__c);
+                    if (isSameName && isSameEmail) {
+                        newTourist.IsDuplicate__c = true;
+                        revisedTourists.add(newTourist);
                     } 
                 }
             }        
-            insertList.addall(revisedTourist);                        
+            insertList.addall(revisedTourists);                        
             insert insertList;    
-        } else {                
-            insert newTourists;
         } 
     }
 }

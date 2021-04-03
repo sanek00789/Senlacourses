@@ -2,13 +2,8 @@ public class ExceptionsPlayground {
     
     public class CustomException extends Exception {}
     
-    public static void generateCustomException (Integer a, Integer b) {
-        try {
-            if (a == b) throw new CustomException('Сannot be equal');
-        } catch(CustomException e) {
-            throw e; 
-            
-        }        
+    public static void generateCustomException (Integer a, Integer b) {       
+        if (a == b) throw new CustomException('Сannot be equal');  
     }
     
     public static void generateRegularException() {
@@ -21,20 +16,16 @@ public class ExceptionsPlayground {
     
     public static void handleExceptions() {
         try {            
-            ExceptionsPlayground.generateRegularException();
+            ExceptionsPlayground.generateCustomException(5, 5);
+            ExceptionsPlayground.generateRegularException();            
         }
+        catch (CustomException ce) {            
+            System.debug('Сaught a custom exception');
+        }        
         catch (QueryException qe) {
             System.debug(qe.getMessage());
             System.debug('Сaught a standard exception');
-        }
-        try {            
-            ExceptionsPlayground.generateCustomException(5, 5);
-        }
-        catch (CustomException ce) {
-            
-            System.debug('Сaught a custom exception');
-        }
-        
-        System.debug('the program ended successfully');
+        }        
+        System.debug('The program ended successfully');
     }
 }

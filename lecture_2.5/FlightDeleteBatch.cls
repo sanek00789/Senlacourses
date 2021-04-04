@@ -1,5 +1,6 @@
-public class FlightDeleteBatch implements Database.Batchable<sObject>{
-    public Map <String, Integer> countFlights = new Map<String, Integer>();    
+public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.Stateful {
+    private Map <String, Integer> countFlights = new Map<String, Integer>();
+	private Integer amount;    
     private Date dateLimit = System.today() - 30;
     private final String query = 'SELECT Name, (SELECT CreatedDate, Status__c FROM Flights__r WHERE Status__c =: constans.FLIGHT_STATUS_DECLINED OR CreatedDate <: dateLimit) FROM Tourist__c';
     
@@ -15,6 +16,7 @@ public class FlightDeleteBatch implements Database.Batchable<sObject>{
             if (tourist.Flights__r.size() != 0) {
                 flightsToDelete.addAll(tourist.Flights__r);
                 countFlights.put(tourist.Name, tourist.Flights__r.size());
+                amount = tourist.Flights__r.size();
             }
         }            
         delete flightsToDelete;

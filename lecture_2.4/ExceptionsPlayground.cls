@@ -18,11 +18,9 @@ public class ExceptionsPlayground {
         try {            
             ExceptionsPlayground.generateCustomException(5, 5);
             ExceptionsPlayground.generateRegularException();            
-        }
-        catch (CustomException ce) {            
+        } catch (CustomException ce) {            
             System.debug('Сaught a custom exception');
-        }        
-        catch (QueryException qe) {
+        } catch (QueryException qe) {
             System.debug(qe.getMessage());
             System.debug('Сaught a standard exception');
         }        

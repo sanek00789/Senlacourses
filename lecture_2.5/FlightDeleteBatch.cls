@@ -1,45 +1,59 @@
 public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.Stateful {
-    private Map <Tourist__c, Integer> countFlights = new Map<Tourist__c, Integer>();
-	 
-    private Date dateLimit = System.today() - 30;
-    private final String query = 'SELECT Name, ' +
-        + '(SELECT CreatedDate, Status__c FROM Flights__r WHERE Status__c =: constans.FLIGHT_STATUS_DECLINED OR CreatedDate <: dateLimit) FROM Tourist__c';    
-    public Database.QueryLocator start(Database.BatchableContext BC) {
+    private Map <Id, Integer> countFlights = new Map<Id, Integer>();
+    private Set<Id> flightIds = new Set<Id>();    
+    private Date dateLimit = System.today() - Constans.FLIGHT_DELETION_PERIOD_DAYS;    
+    private final String query = 'SELECT CreatedDate, ' + 
+        								'Status__c, ' + 
+        								'Tourist__r.Name, ' +
+        								'Tourist__r.Id ' +
+        						'FROM Flight__c ' +
+        						'WHERE CreatedDate <=: dateLimit AND Status__c =: Constans.FLIGHT_STATUS_DECLINED';    
+    
+    public Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(query);
     }
     
-    public void execute (Database.BatchableContext BC, List<Tourist__c> touristsWithFlights) {
-        if (touristsWithFlights == null || touristsWithFlights.isEmpty()) return;
-        List <Flight__c> flightsToDelete = new List<Flight__c>();
+    public void execute (Database.BatchableContext bc, List<Flight__c> flightsToDelete) {        
+        List<Database.DeleteResult> delResultFlights = Database.delete(flightsToDelete, false);
         
-        for (Tourist__c tourist :touristsWithFlights) {
-            if (tourist.Flights__r.size() != 0) {
-                flightsToDelete.addAll(tourist.Flights__r);
-                countFlights.put(tourist, tourist.Flights__r.size());                
+        for (Database.DeleteResult delresultflight :delResultFlights) {
+            if(delresultflight.isSuccess()) {
+                flightIds.add(delresultflight.getId());
             }
-        }            
-        delete flightsToDelete;
-    }
-    
-    public void finish (Database.BatchableContext BC) {
+        }
+        
+        for (Flight__c flight :flightsToDelete) {
+            for(Id flightId :flightIds) {
+                if (flight.Id == flightId) {
+                    if(countFlights.containsKey(flight.Tourist__c)) {
+                        Integer count = countFlights.get(flight.Tourist__c) + 1;
+                        countFlights.put(flight.Tourist__c, count);
+                    } else {
+                        countFlights.put(flight.Tourist__c, 1);
+                    }
+                }                
+            }
+        }
+    }    
+    public void finish (Database.BatchableContext bc) {
         List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();         
-        List<Tourist_data__mdt> emails = TouristCustomDataManager.getEmail(); 
+        List<Email__mdt> emails = TouristCustomDataManager.getEmail(); 
+        List<Tourist__c> tourists = TouristManager.getByIds(countFlights.keyset());
         String textEmail = '';
         
-        for (Tourist__c tourist : countFlights.keyset()) {  
+        for (Tourist__c tourist : tourists) {  
             String Name = tourist.Name;
-            Integer countFlights = (countFlights.get(tourist));
-            //textEmail += amount + ' flights were deletet from tourist ' + tourist.Name + '. \n';
+            Integer countFlights = (countFlights.get(tourist.Id));            
             textEmail += + '<a href='+ URL.getSalesforceBaseUrl().toExternalForm()+'/'+ tourist.Id +'> ' + Name + '</a> - removed ' + countFlights + ' flights. <br/>';
         }
         
-        for (Tourist_data__mdt touristData : emails) {
+        for (Email__mdt email : emails) {            
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             List<String> emailAddress = new List<String>();
-            emailAddress.add(touristData.Email__c);
-            mail.setSubject('Delete Flights');
+            emailAddress.add(email.Email_to_inform_you_about_the_removal_of__c);
+            mail.setSubject('Email to inform you about the removal of');
             mail.setToAddresses(emailAddress);        	
-            mail.setHtmlBody('Hello<br/>' + textEmail);
+            mail.setHtmlBody('Hello!<br/>' + 'The following entries have been removed from the organization:<br/>' + textEmail);
             mails.add(mail);
         }        
         Messaging.sendEmail(mails);  

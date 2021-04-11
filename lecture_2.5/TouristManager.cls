@@ -48,7 +48,7 @@ public class TouristManager {
         ];
     }
     
-    public static List<Tourist__c> getEmail (Set<String> names, Set<String> emails) {                   
+    public static List<Tourist__c> getByNameAndEmail (Set<String> names, Set<String> emails) {                   
         List<Tourist__c> recordsTourists = [
             SELECT Name,
             Email__c,
@@ -74,5 +74,5 @@ public class TouristManager {
             FROM Tourist__c 
             WHERE Id IN : touristIds];
         return recordsTourists;
-    }
+    }    
 }

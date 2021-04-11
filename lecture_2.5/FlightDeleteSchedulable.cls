@@ -1,7 +1,7 @@
 public class FlightDeleteSchedulable implements Schedulable {
     
-    public void execute (SchedulableContext SC) {
-        FlightDeleteBatch myBatch = new FlightDeleteBatch();
-        Id batchId = Database.executeBatch(myBatch);
+    public void execute (SchedulableContext sc) {
+        FlightDeleteBatch flightDeleteBatch = new FlightDeleteBatch();
+        Database.executeBatch(flightDeleteBatch);
     }
 }

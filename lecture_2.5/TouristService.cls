@@ -9,9 +9,7 @@ public class TouristService {
             names.add(tour.Name);
             emails.add(tour.Email__c);
         }        
-        List<Tourist__c> recordsTourists = TouristManager.getEmail(names, emails);        
-        List<Tourist__c> revisedTourists = new List<Tourist__c> ();
-        List<Tourist__c> insertList = new List<Tourist__c> ();
+        List<Tourist__c> recordsTourists = TouristManager.getByNameAndEmail(names, emails); 
         if (!recordsTourists.isEmpty()) {
             
             for (Tourist__c newTourist : newTourists) {
@@ -20,13 +18,11 @@ public class TouristService {
                     Boolean isSameName = (tourist.Name == newTourist.Name);
                     Boolean isSameEmail = (tourist.Email__c == newTourist.Email__c);
                     if (isSameName && isSameEmail) {
-                        newTourist.IsDuplicate__c = true;
-                        revisedTourists.add(newTourist);
+                        newTourist.IsDuplicate__c = true;                        
                     } 
                 }
-            }        
-            insertList.addall(revisedTourists);                        
-        }
+            } 
+        } 
     }
     
     @future
@@ -40,9 +36,7 @@ public class TouristService {
             names.add(tour.Name);
             emails.add(tour.Email__c);
         }        
-        List<Tourist__c> recordsTourists = TouristManager.getEmail(names, emails);        
-        List<Tourist__c> revisedTourists = new List<Tourist__c> ();
-        List<Tourist__c> insertList = new List<Tourist__c> ();
+        List<Tourist__c> recordsTourists = TouristManager.getByNameAndEmail(names, emails);
         if (!recordsTourists.isEmpty()) {
             
             for (Tourist__c newTourist : newTourists) {
@@ -52,12 +46,9 @@ public class TouristService {
                     Boolean isSameEmail = (tourist.Email__c == newTourist.Email__c);
                     if (isSameName && isSameEmail) {
                         newTourist.IsDuplicate__c = true;
-                        revisedTourists.add(newTourist);
                     } 
                 }
-            }        
-            insertList.addall(revisedTourists);                        
-            insert insertList;    
+            } 
         }
     }
 }

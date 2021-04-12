@@ -1,13 +1,14 @@
 public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.Stateful {
     private Map <Id, Integer> countFlights = new Map<Id, Integer>();
     private Set<Id> flightIds = new Set<Id>();    
-    private Date dateLimit = System.today() - Constans.FLIGHT_DELETION_PERIOD_DAYS;    
+    private Date dateLimit = System.today() - Constans.FLIGHT_DELETION_PERIOD_DAYS;
+    private String status = Constans.FLIGHT_STATUS_DECLINED;
     private final String query = 'SELECT CreatedDate, ' + 
-        								'Status__c, ' + 
-        								'Tourist__r.Name, ' +
-        								'Tourist__r.Id ' +
-        						'FROM Flight__c ' +
-        						'WHERE CreatedDate <=: dateLimit AND Status__c =: Constans.FLIGHT_STATUS_DECLINED';    
+        'Status__c, ' + 
+        'Tourist__r.Name, ' +
+        'Tourist__r.Id ' +
+        'FROM Flight__c ' +
+        'WHERE CreatedDate <=: dateLimit AND Status__c =: status';    
     
     public Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(query);

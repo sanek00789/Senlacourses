@@ -42,13 +42,15 @@ public class TouristService {
             for (Tourist__c newTourist : newTourists) {
                 
                 for (Tourist__c tourist : recordsTourists) {
+                    Boolean isSameId = (tourist.Id != newTourist.Id);
                     Boolean isSameName = (tourist.Name == newTourist.Name);
                     Boolean isSameEmail = (tourist.Email__c == newTourist.Email__c);
-                    if (isSameName && isSameEmail) {
+                    if (isSameName && isSameEmail && isSameId) {
                         newTourist.IsDuplicate__c = true;
                     } 
                 }
-            } 
+            }
+            update newTourists;
         }
     }
 }

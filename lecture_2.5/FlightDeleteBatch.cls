@@ -15,27 +15,22 @@ public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.
     }
     
     public void execute (Database.BatchableContext bc, List<Flight__c> flightsToDelete) {        
-        List<Database.DeleteResult> delResultFlights = Database.delete(flightsToDelete, false);
+        Map<Id, Flight__c> flightById = new Map<Id, Flight__c> (flightsToDelete);
+        List<Database.DeleteResult> delResultFlights = Database.delete(flightsToDelete, false);        
         
         for (Database.DeleteResult delresultflight :delResultFlights) {
             if(delresultflight.isSuccess()) {
-                flightIds.add(delresultflight.getId());
-            }
-        }
-        
-        for (Flight__c flight :flightsToDelete) {
-            for(Id flightId :flightIds) {
-                if (flight.Id == flightId) {
-                    if(countFlights.containsKey(flight.Tourist__c)) {
-                        Integer count = countFlights.get(flight.Tourist__c) + 1;
-                        countFlights.put(flight.Tourist__c, count);
-                    } else {
-                        countFlights.put(flight.Tourist__c, 1);
-                    }
+                Flight__c flight = flightById.get(delresultflight.getId());
+                if(countFlights.containsKey(flight.Tourist__c)) {
+                    Integer count = countFlights.get(flight.Tourist__c) + 1;
+                    countFlights.put(flight.Tourist__c, count);
+                } else {
+                    countFlights.put(flight.Tourist__c, 1);
                 }                
             }
-        }
-    }    
+        } 
+    }
+    
     public void finish (Database.BatchableContext bc) {
         List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();         
         List<Email__mdt> emails = TouristCustomDataManager.getEmail(); 

@@ -1,10 +1,11 @@
 public class WeatherForecastManager {
-    public static List<Space_Point__c> getLatitudeAndLongitude() {
-        List<Space_Point__c> spasePoints = [
-            SELECT Latitude__c, 
-            		Longitude__c 
-            FROM Space_Point__c LIMIT 1
+        
+    public static List<Weather_Daily_Forecast__c> getIds() {
+        List<Weather_Daily_Forecast__c> ids = [
+            SELECT Id 
+            FROM Weather_Daily_Forecast__c
         ];        
-        return spasePoints;		
+        return ids;		
     }
+    
 }

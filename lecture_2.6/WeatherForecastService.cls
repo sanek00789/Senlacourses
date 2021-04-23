@@ -17,8 +17,7 @@ public class WeatherForecastService {
             if (response.getStatusCode() == 200) {
                 Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
                 List<Object> days = (List<Object>) results.get('data');
-                System.debug(days);
-                
+                                
                 for (Object day :days) {                    
                     Map<String, Object> dailyData = (Map<String, Object>) day;
                     dateAndTemperature.put(date.valueOf(string.valueOf(dailyData.get('datetime'))),(decimal) (dailyData.get('temp')));                
@@ -28,6 +27,8 @@ public class WeatherForecastService {
             }
         } catch (WeatherForecastException wfe) {
             System.debug(wfe.getMessage());
+        } catch (CalloutException ce) {
+            System.debug(ce.getMessage());
         }        
         return dateAndTemperature;
     }

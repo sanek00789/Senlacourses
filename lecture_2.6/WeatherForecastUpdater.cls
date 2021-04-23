@@ -1,5 +1,6 @@
 public with sharing class WeatherForecastUpdater {
     
+    @future(callout = true)
     public static void updateForecasts() {
         List<Weather_Daily_Forecast__c> oldForecasts = WeatherForecastManager.getIds();        
         List<Space_Point__c> coordinates = SpacePointManager.getLatitudeAndLongitude();

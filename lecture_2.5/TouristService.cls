@@ -9,7 +9,7 @@ public class TouristService {
             names.add(tour.Name);
             emails.add(tour.Email__c);
         }        
-        List<Tourist__c> recordsTourists = TouristManager.getByNameAndEmail(names, emails); 
+        List<Tourist__c> recordsTourists = TouristManager.getByNamesAndEmails(names, emails);
         if (!recordsTourists.isEmpty()) {
             
             for (Tourist__c newTourist : newTourists) {
@@ -36,16 +36,16 @@ public class TouristService {
             names.add(tour.Name);
             emails.add(tour.Email__c);
         }        
-        List<Tourist__c> recordsTourists = TouristManager.getByNameAndEmail(names, emails);
+        List<Tourist__c> recordsTourists = TouristManager.getByNamesAndEmails(names, emails);
         if (!recordsTourists.isEmpty()) {
             
             for (Tourist__c newTourist : newTourists) {
                 
                 for (Tourist__c tourist : recordsTourists) {
-                    Boolean isSameId = (tourist.Id != newTourist.Id);
+                    Boolean isDifferentIds = (tourist.Id != newTourist.Id);
                     Boolean isSameName = (tourist.Name == newTourist.Name);
                     Boolean isSameEmail = (tourist.Email__c == newTourist.Email__c);
-                    if (isSameName && isSameEmail && isSameId) {
+                    if (isSameName && isSameEmail && isDifferentIds) {
                         newTourist.IsDuplicate__c = true;
                     } 
                 }

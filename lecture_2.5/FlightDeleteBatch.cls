@@ -33,7 +33,7 @@ public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.
     
     public void finish (Database.BatchableContext bc) {
         List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();         
-        List<Email__mdt> emails = TouristCustomDataManager.getEmail(); 
+        List<Email__mdt> emails = EmailCustomMetadataTypeManager.getEmail(); 
         List<Tourist__c> tourists = TouristManager.getByIds(countFlights.keyset());
         String textEmail = '';
         
@@ -46,7 +46,7 @@ public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.
         for (Email__mdt email : emails) {            
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             List<String> emailAddress = new List<String>();
-            emailAddress.add(email.Email_to_inform_you_about_the_removal_of__c);
+            emailAddress.add(email.Email_address__c);
             mail.setSubject('Email to inform you about the removal of');
             mail.setToAddresses(emailAddress);        	
             mail.setHtmlBody('Hello!<br/>' + 'The following entries have been removed from the organization:<br/>' + textEmail);

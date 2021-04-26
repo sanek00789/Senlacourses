@@ -48,7 +48,7 @@ public class TouristManager {
         ];
     }
     
-    public static List<Tourist__c> getEmail (Set<String> names, Set<String> emails) {                   
+    public static List<Tourist__c> getByNamesAndEmails (Set<String> names, Set<String> emails) {                   
         List<Tourist__c> recordsTourists = [
             SELECT Name,
             Email__c,
@@ -69,9 +69,20 @@ public class TouristManager {
     public static List<Tourist__c> getByIds (Set<Id> touristIds) {
         List<Tourist__c> recordsTourists = [
             SELECT Name,
-            Age__c 
+            Age__c,
+            Email__c
             FROM Tourist__c 
             WHERE Id IN : touristIds];
         return recordsTourists;
     }
+	
+	public static List<Tourist__c> getByNameAndEmail (String name, String email) {                   
+        List<Tourist__c> recordsTourists = [
+            SELECT Name,
+            Email__c,
+            IsDuplicate__c 
+            FROM Tourist__c 
+            WHERE Name =: name AND Email__c =: email];
+        return recordsTourists;
+    }    
 }

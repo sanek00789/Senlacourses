@@ -84,5 +84,14 @@ public class TouristManager {
             FROM Tourist__c 
             WHERE Name =: name AND Email__c =: email];
         return recordsTourists;
-    }    
+    }
+    
+    public static List<Tourist__c> getByFuzzynameAndAge (String fuzzyname, Integer age) {                   
+        List<Tourist__c> recordsTourists = [
+                SELECT Name, 
+                Age__c 
+                FROM Tourist__c
+                WHERE Name LIKE :fuzzyname OR Age__c =:age];
+        return recordsTourists;
+    }
 }

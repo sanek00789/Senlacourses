@@ -6,8 +6,8 @@ global with sharing class TouristRestService {
         RestRequest req = RestContext.request;
         RestResponse res = RestContext.response;        
         Map<String,String> paramsMap = req.params;
-        String fuzzyname = '%' + paramsMap.get('fuzzyname') + '%';
-        String ageString = paramsMap.get('age');
+        String fuzzyname = paramsMap.get(Constans.REQUEST_PARAMETR_FUZZYNAME);
+        String ageString = paramsMap.get(Constans.REQUEST_PARAMETR_AGE);
         Integer age;	
         try {
             age = Integer.valueOf(ageString);
@@ -15,23 +15,18 @@ global with sharing class TouristRestService {
         catch (TypeException te) {
             System.debug(te.getMessage()); 
         }        
-        if (String.isBlank(paramsMap.get('fuzzyname'))) {
+        if (String.isBlank(fuzzyname)) {
             res.responseBody = Blob.valueOf(Constans.THE_NAME_MUST_BE_NOT_EMPRY);
-            res.statusCode = 404;
+            res.statusCode = Constans.STATUS_CODE_404;
             return;            
         }  
         if (String.isNotBlank(ageString) && !ageString.isNumeric()) {
             res.responseBody = Blob.valueOf(Constans.THE_AGE_MUST_BE_A_NUMBER);
-            res.statusCode = 404;
+            res.statusCode = Constans.STATUS_CODE_404;
             return;
         } else {
-            List<Tourist__c> tourists = [
-                SELECT Name, 
-                Age__c 
-                FROM Tourist__c
-                WHERE Name LIKE :fuzzyname OR Age__c =:age
-            ];    
-            res.statusCode = 200;
+            List<Tourist__c> tourists = TouristManager.getByFuzzynameAndAge(fuzzyname, age) ;    
+            res.statusCode = Constans.STATUS_CODE_200;
             res.responseBody = Blob.valueOf(JSON.serializePretty(tourists));
         }         
     }
@@ -45,7 +40,7 @@ global with sharing class TouristRestService {
         newTourist.Email__c = email;
         List<Tourist__c> tourists = TouristManager.getByNameAndEmail(name, email);
         if(!tourists.isEmpty()){
-            res.statusCode = 409;
+            res.statusCode = Constans.STATUS_CODE_409;
         } else {
             insert newTourist;    
         }

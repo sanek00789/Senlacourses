@@ -8,6 +8,8 @@ public class FlightDeleteSchedulableTest {
         Test.startTest();
         FlightDeleteSchedulable flightDeleteSchedulable = new FlightDeleteSchedulable();         
         String jobId = System.schedule('FlightDeleteSchedulable', CRON_EXP, flightDeleteSchedulable); 
+        Test.stopTest();
+        
         CronTrigger ct = [
             SELECT Id, 
             	CronExpression,
@@ -19,6 +21,5 @@ public class FlightDeleteSchedulableTest {
         System.assertEquals(CRON_EXP, ct.CronExpression);
         System.assertEquals(0, ct.TimesTriggered);
         System.assertEquals('2022-03-15 00:00:00', String.valueOf(ct.NextFireTime));
-        Test.stopTest();
     }
 }

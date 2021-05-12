@@ -1,12 +1,15 @@
 @isTest
 public class WeatherForecastUpdaterSchedulableTest {
     public static String CRON_EXP = '0 0 0 15 3 ? 2022';
+    
     @isTest
     static void testWeatherForecastUpdaterSchedulable() {
         
         Test.startTest();
         WeatherForecastUpdaterSchedulable weatherForecastUpdaterSchedulable = new WeatherForecastUpdaterSchedulable();         
         String jobId = System.schedule('WeatherForecastUpdaterSchedulable', CRON_EXP, weatherForecastUpdaterSchedulable); 
+        Test.stopTest();
+        
         CronTrigger ct = [
             SELECT Id, 
             	CronExpression,
@@ -18,7 +21,6 @@ public class WeatherForecastUpdaterSchedulableTest {
         System.assertEquals(CRON_EXP, ct.CronExpression);
         System.assertEquals(0, ct.TimesTriggered);
         System.assertEquals('2022-03-15 00:00:00', String.valueOf(ct.NextFireTime));
-        Test.stopTest();
     }
 
 }

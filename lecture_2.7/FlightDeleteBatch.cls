@@ -8,8 +8,8 @@ public class FlightDeleteBatch implements Database.Batchable<sObject>, Database.
         'Tourist__r.Name, ' +
         'Tourist__r.Id ' +
         'FROM Flight__c ' +
-        'WHERE  Status__c =: status';    
-    /*CreatedDate <=: dateLimit AND*/
+        'WHERE CreatedDate <=: dateLimit AND Status__c =: status';    
+    
     public Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(query);
     }

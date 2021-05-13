@@ -67,4 +67,10 @@ public class TouristManagerTest {
         List<Tourist__c> tourists = TouristManager.getByFuzzynameAndAge('fuzzyname', 1989);
         System.assert(tourists != null);
     }
+    
+    @isTest
+    static void testGetByFuzzyname() {                
+        List<Tourist__c> tourists = TouristManager.getByFuzzyname('fuzzyname');
+        System.assert(tourists != null);
+    }
 }

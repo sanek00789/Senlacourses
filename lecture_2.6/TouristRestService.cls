@@ -7,28 +7,33 @@ global with sharing class TouristRestService {
         RestResponse res = RestContext.response;        
         Map<String,String> paramsMap = req.params;
         String fuzzyname = paramsMap.get(Constans.REQUEST_PARAMETR_FUZZYNAME);
-        String ageString = paramsMap.get(Constans.REQUEST_PARAMETR_AGE);
-        Integer age;	
-        try {
-            age = Integer.valueOf(ageString);
+        String ageString = paramsMap.get(Constans.REQUEST_PARAMETR_AGE);        
+        
+        try {            
+            if (String.isEmpty(ageString)) {
+                List<Tourist__c> touristsWithoutAge = TouristManager.getByFuzzyname(fuzzyname);
+                res.responseBody = Blob.valueOf(JSON.serializePretty(touristsWithoutAge));
+                res.statusCode = Constans.STATUS_CODE_200;
+            } else if (String.isBlank(fuzzyname)) {
+                res.responseBody = Blob.valueOf(Constans.THE_NAME_MUST_BE_NOT_EMPRY);
+                res.statusCode = Constans.STATUS_CODE_404;
+                return;            
+            } else if (String.isNotBlank(ageString) && !ageString.isNumeric()) {
+                res.responseBody = Blob.valueOf(Constans.THE_AGE_MUST_BE_A_NUMBER);
+                res.statusCode = Constans.STATUS_CODE_404;
+                return;
+            } else {
+                List<Tourist__c> tourists = TouristManager.getByFuzzynameAndAge(fuzzyname, Integer.valueOf(ageString)) ;    
+                res.statusCode = Constans.STATUS_CODE_200;
+                res.responseBody = Blob.valueOf(JSON.serializePretty(tourists));
+            }
         }
         catch (TypeException te) {
             System.debug(te.getMessage()); 
-        }        
-        if (String.isBlank(fuzzyname)) {
-            res.responseBody = Blob.valueOf(Constans.THE_NAME_MUST_BE_NOT_EMPRY);
-            res.statusCode = Constans.STATUS_CODE_404;
-            return;            
-        }  
-        if (String.isNotBlank(ageString) && !ageString.isNumeric()) {
-            res.responseBody = Blob.valueOf(Constans.THE_AGE_MUST_BE_A_NUMBER);
-            res.statusCode = Constans.STATUS_CODE_404;
-            return;
-        } else {
-            List<Tourist__c> tourists = TouristManager.getByFuzzynameAndAge(fuzzyname, age) ;    
-            res.statusCode = Constans.STATUS_CODE_200;
-            res.responseBody = Blob.valueOf(JSON.serializePretty(tourists));
-        }         
+        }
+        catch (Exception e) {
+            System.debug(e.getMessage()); 
+        }
     }
     
     @HttpPost

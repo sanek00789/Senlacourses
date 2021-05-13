@@ -94,4 +94,13 @@ public class TouristManager {
                 WHERE Name LIKE :fuzzyname OR Age__c =:age];
         return recordsTourists;
     }
+    
+    public static List<Tourist__c> getByFuzzyname (String fuzzyname ) {                   
+        List<Tourist__c> recordsTourists = [
+                SELECT Name, 
+                Age__c 
+                FROM Tourist__c
+                WHERE Name LIKE :fuzzyname];
+        return recordsTourists;
+    }
 }

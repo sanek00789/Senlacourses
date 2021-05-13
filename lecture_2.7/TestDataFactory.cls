@@ -37,10 +37,31 @@ public class TestDataFactory {
             newFlights.add(
                 new Flight__c(Trip__c = trips.get(0).Id, 
                               Tourist__c = tourist.Id, 
-                              Status__c = 'Declined')
+                              Status__c = 'Accepted')
             );            
         }        
         insert newFlights;
         return newFlights;
-    }   
+    }
+    
+    public static List<Weather_Daily_Forecast__c> forecastsData(Integer numForecasts) {
+        List<Weather_Daily_Forecast__c> newforecasts = new List<Weather_Daily_Forecast__c>();
+        for (Integer i = 0; i < numForecasts; i++) {
+            newforecasts.add(new Weather_Daily_Forecast__c(City__c = 'City ' + i));
+        }
+        insert newforecasts;
+        return newforecasts;        
+    }
+    
+    public static List<Space_Point__c> spacePointsData(Integer numSpacePoint) {
+        List<Space_Point__c> newSpacePoints = new List<Space_Point__c>();
+        for (Integer i = 0; i < numSpacePoint; i++) {
+            newSpacePoints.add(new Space_Point__c(Country__c = 'Country ' + i,
+                                                 Latitude__c = i,
+                                                 Longitude__c = i)
+                              );
+        }
+        insert newSpacePoints;
+        return newSpacePoints;        
+    }    
 }

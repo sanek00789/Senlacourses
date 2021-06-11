@@ -1,8 +1,8 @@
 public class RegTouristsForTripController {
     
     @AuraEnabled
-    public static List <Tourist__c> getSuitableForTrip(Id recordId) {        
-        List <Tourist__c> result = TouristManager.getSuitableForTrip(recordId);
+    public static List <Tourist__c> getSuitableForTrip(Id tripId) {        
+        List <Tourist__c> result = TouristManager.getSuitableForTrip(tripId);
         return result;
     } 
     
@@ -20,10 +20,15 @@ public class RegTouristsForTripController {
     }
     
     @AuraEnabled
-    public static Integer countSeats(Id tripId) {
+    public static Integer countFreeSeats(Id tripId) {
         Integer occupiedSeats = FlightManager.getNumberOfRegisteredTourists(tripId);
         Integer numberSeats = TripManager.getNumberSeats(tripId);
-        Integer countFreeSeats = numberSeats - occupiedSeats;
-        return countFreeSeats; 
+        Integer result = numberSeats - occupiedSeats;
+        return result; 
     }
+    
+    @AuraEnabled
+    public static Date getStartDate(Id tripId) {        
+        return TripManager.getStartDate(tripId); 
+    }    
 }

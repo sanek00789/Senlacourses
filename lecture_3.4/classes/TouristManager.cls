@@ -122,19 +122,28 @@ public class TouristManager {
         return result;
     }
     
-    public static List<Tourist__c> getSuitableForTrip(Id touristId) {
+    public static List<Tourist__c> getSuitableForTrip(Id tripId) {
+        Trip__c trip = TripManager.getByIds(new Set<Id>{tripId})[0];
         List<Tourist__c> result = [
             SELECT Id,
-            Name,
-            Age__c,
-            Birthdate__c,
-            Email__c,
-            Gender__c,
-            Active__c
+                Name,
+                Age__c,
+                Birthdate__c,
+                Email__c,
+                Gender__c,
+                Active__c
             FROM Tourist__c
-            WHERE Active__c = true AND
-            Id NOT IN (SELECT Tourist__c FROM Flight__c WHERE Trip__c = :touristId)
-        ];        
+            WHERE Active__c = true
+            AND Age__c >: trip.Minimum_Age__c
+            AND Id NOT IN (
+                SELECT Tourist__c 
+                FROM Flight__c 
+                WHERE Trip__c = :tripId)
+            AND Id NOt IN (
+                SELECT Tourist__c 
+                FROM Flight__c
+                WHERE Trip__r.Start_Date__c <=: trip.Start_Date__c AND Trip__r.End_Date__c >= :trip.Start_Date__c)
+        ];                
         return result;
     }
     

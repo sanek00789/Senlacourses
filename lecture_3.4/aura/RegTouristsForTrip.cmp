@@ -13,8 +13,8 @@
     <aura:attribute name="openService" type="Boolean" default="true"/>
     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="change" value="{!v.countFreeSeats}" action="{!c.doInit}"/>
-    <aura:handler name="change" value="{!v.startDate}" action="{!c.doInit}"/>
+    <aura:handler name="seats" value="{!v.countFreeSeats}" action="{!c.doInit}"/>
+    <aura:handler name="start" value="{!v.startDate}" action="{!c.doInit}"/>
     <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
     
@@ -40,6 +40,7 @@
                 <aura:if isTrue="{!v.closeService}">
                     <div class="slds-modal__content slds-p-around_medium slds-p-left_large">
                         <p class="slds-text-align_center slds-text-heading_medium">{!$Label.c.serviceUnavailable}</p>
+                        <p class="slds-text-align_center slds-text-heading_small">{!$Label.c.allSeatsTaken}</p>
                     </div>
                 </aura:if>
                 

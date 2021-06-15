@@ -1,0 +1,118 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" controller="TouristAssignmentController" >
+    <aura:attribute name="selectedId" type="String" />
+    <aura:attribute name="trips" type="Trip__c[]" />
+    <aura:attribute name="selectedTripId" type="String" />
+    <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="showDetails" type="Boolean" default="false" />
+    <aura:attribute name="selectedSpacePoint" type="String" />
+    <aura:attribute name="selectedTrip" type="Trip__c" />
+    <aura:attribute name="averageTemperature" type="Decimal"/>
+    
+    <aura:handler name="change" value="{!v.selectedId}" action="{!c.fetchTrips}"/>
+    
+    <lightning:layout> 
+        <lightning:layoutItem size="12">
+            <lightning:card class="slds-p-horizontal_medium slds-m-vertical_medium"> 
+                <c:LookupField 
+                               objectAPIName="Tourist__c" 
+                               label="Relate to"
+                               returnFields="['Name','Age__c','Gender__c']" 
+                               queryFields="['Name','Age__c','Gender__c']"
+                               selectedId="{!v.selectedId}"
+                               filter="CreatedDate > 2001-01-01T00:00:01Z"/> 
+            </lightning:card>         
+        </lightning:layoutItem>        
+    </lightning:layout>
+    
+    <lightning:layout verticalAlign="stretch" multipleRows="true" class="x-large">        
+        <aura:iteration items="{!v.trips}" var="trip" indexVar="idx">
+            <lightning:layoutItem size="3">             
+                <lightning:card iconName="custom:custom20" title="Trip information" class="slds-p-horizontal_medium slds-m-around_xxx-small">            
+                    <div class="slds-card slds-box" data-record="{!idx}" onclick="{!c.getTripDetails}">
+                        <p><b>Name: </b><ui:outputText value="{!trip.Name}"/> </p>
+                        <p><b>Start Date: </b><ui:outputText value="{!trip.Start_Date__c}"/> </p>
+                        <p><b>Seats: </b><ui:outputText value="{!trip.Seats__c}"/></p>  
+                    </div>
+                </lightning:card >
+            </lightning:layoutItem>
+        </aura:iteration>         
+    </lightning:layout>
+    
+    <aura:if isTrue="{!v.showDetails}">
+        <lightning:card class="slds-p-horizontal_medium slds-p-around_small slds-m-vertical_medium" title="Trip Details" >
+            <lightning:layout>
+                <lightning:layoutItem  size="6">
+                    <lightning:card>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col ">
+                                <span>
+                                    <h3 class="slds-text-heading--medium slds-truncate">{!v.selectedTrip.Name}</h3>
+                                    <p><b>Start Date:  </b><ui:outputText value="{!v.selectedTrip.Start_Date__c}"/></p>
+                                    <p><b>End Date:  </b><ui:outputText value="{!v.selectedTrip.End_Date__c}"/></p>
+                                    <p><b>Minimum Age:  </b><ui:outputText value="{!v.selectedTrip.Minimum_Age__c}"/></p>
+                                </span>
+                            </div>
+                            <div class="slds-col row slds-card slds-box">
+                                <span>
+                                    <h3 class="slds-text-heading--medium slds-truncate"> </h3>
+                                    <p><b>   </b><ui:outputText /></p>
+                                    <p><b>Seats:  </b><ui:outputText value="{!v.selectedTrip.Seats__c}"/></p>
+                                    <p><b>Departure Space Point:  </b><ui:outputText value="{!v.selectedTrip.Departure_Space_Point__c.City__c}"/></p>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:card>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem padding="around-small" size="4">
+                    <lightning:card>
+                        <div class="slds-card slds-box">
+                            <h4 class="slds-text-align_center slds-text-heading--medium slds-truncate">Temperature today: +11 </h4>
+                            <p> <ui:outputText value="{!v.averageTemperature}"/></p>                    
+                        </div>
+                    </lightning:card>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="2">
+                    <lightning:card>
+                        <div class="slds-align_absolute-center" >
+                            <lightning:button variant="brand" 
+                                              iconName="utility:record_create" 
+                                              label="Submit" 
+                                              title="Submit" 
+                                              onclick="{! c.clickCreate }" 
+                                              class="slds-m-around_x-small slds-m-around_medium slds-float_right"/>
+                        </div>
+                    </lightning:card>
+                </lightning:layoutItem>    
+            </lightning:layout>
+            
+            <lightning:layoutItem padding="around-small" size="12">
+                <lightning:card>
+                    <lightning:map mapMarkers="{! v.mapMarkers }" 
+                                   zoomLevel="6"/>
+                </lightning:card>
+            </lightning:layoutItem>
+        </lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showModal}">
+        <div style="height:640px">
+            <section role="dialog" tabindex="-1" class="slds-modal slds-modal_x-small slds-fade-in-open" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-p-left_large" id="modal-content-id-1">
+                        <p class="slds-text-align_center">{!$Label.c.confirmationFlightCreation}</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button name='No' label='No' onclick='{!c.handleNo}'/>
+                        <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleYes}'/>                        
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+</aura:component>

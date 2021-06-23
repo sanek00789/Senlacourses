@@ -41,13 +41,7 @@
         });
         $A.enqueueAction(action);
         component.set('v.showModal', !hideModal);
-        const toastEvent = $A.get("e.force:showToast");
-        toastEvent.setParams({
-            "title" : "Successfully ",
-            "type" : "success",
-            "message" : $A.get("$Label.c.flightsCreatedSuccessfully")
-        });
-        toastEvent.fire();
+        helper.showToastSuccess(component);
     },
     
     handleNo : function(component, event, helper) {

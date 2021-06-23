@@ -1,5 +1,7 @@
 ({
-	fetchTrips : function (component, event) {
+	fetchTrips : function (component) {
+        var url = $A.get('$Resource.TripImage');
+        component.set('v.backgroundImageURL', url);
         const action = component.get('c.getTripsById');
         action.setParams({
             touristId: component.get('v.selectedId')
@@ -14,7 +16,7 @@
         $A.enqueueAction(action); 
     },    
     
-    fetchSpacePoint : function (component, event) {        
+    /*fetchSpacePoint : function (component, event) {        
         const action = component.get('c.getTrip');
         action.setParams({            
             tripId: component.get('v.selectedTripId')
@@ -27,9 +29,9 @@
             }
         });
         $A.enqueueAction(action);       
-    },
+    },*/
     
-    getWeather : function(component, event) {        
+    getWeather : function(component) {        
         let action = component.get("c.getTemperature");
         action.setParams({
             tripId : component.get("v.selectedTripId")
@@ -41,5 +43,15 @@
             }             
         });
         $A.enqueueAction(action);
-    }
+    },
+    
+    showToastSuccess: function (component) {
+       const toastEvent = $A.get("e.force:showToast");
+        toastEvent.setParams({
+            "title" : $A.get("$Label.c.Successfully"),
+            "type" : "success",
+            "message" : $A.get("$Label.c.flightsCreatedSuccessfully")
+        });
+        toastEvent.fire();
+    },
 })

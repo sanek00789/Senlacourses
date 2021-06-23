@@ -51,9 +51,9 @@
         $A.enqueueAction(action);
         component.set('v.showModal', !hideModal);
         const title = $A.get("$Label.c.Successfully");
-            const message = $A.get("$Label.c.flightsCreatedSuccessfully");
-            const type = 'success'
-            helper.showToast(title, message, type);        
+        const message = $A.get("$Label.c.flightsCreatedSuccessfully");
+        const type = 'success'
+        helper.showToast(title, message, type);        
     },
     
     handleNo : function(component) {

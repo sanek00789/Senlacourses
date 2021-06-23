@@ -1,7 +1,7 @@
 ({
     fetchTrips : function(component, event, helper) {
         component.set("v.showDetails", false);
-        helper.fetchTrips(component, event)        
+        helper.fetchTrips(component, event)		        
     },
     
     clickCreate : function (component, event, helper) {            
@@ -22,6 +22,7 @@
             }
         ]);
         helper.getWeather(component, event);
+        helper.getSpacePoint(component, event);
         component.set("v.showDetails", true);
         
     },

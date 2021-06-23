@@ -32,7 +32,10 @@ public class TripManager {
         return startDate;
     }
     
-    public static List<Trip__c> getById(Id touristId) {        
+    public static List<Trip__c> getById(Id touristId) {
+        if(touristId == null) {
+            return new List<Trip__c> ();
+        }
         List<Trip__c> result = [
             SELECT Id,
                 	Name,

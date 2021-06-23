@@ -1,30 +1,23 @@
-public class TouristAssignmentController {
+public inherited sharing class TouristAssignmentController {
     
-    @AuraEnabled
-    public static List <Trip__c> getTripsById(Id touristId) {
-        if (touristId == null) {
-            return new List<Trip__c> ();
-        }
+    @AuraEnabled(cacheable = true)
+    public static List <Trip__c> getTripsById(Id touristId) {        
         List<Trip__c> trips = TripManager.getById(touristId);
         return trips;
     }
     
     @AuraEnabled
     public static void createFlight(Id touristId, Id tripId) {
-        Flight__c newFlight = new Flight__c();                                
-        newFlight.Trip__c = tripId;            
-        newFlight.Tourist__c = touristId;
-        newFlight.Status__c = Constans.FLIGHT_STATUS_REQUSTED; 
-        insert newFlight;
+        TouristService.createFlight(touristId, tripId);
     }
     
-    @AuraEnabled
+    @AuraEnabled(cacheable = true)
     public static List<Trip__c> getTrip(Id tripId) {
         List<Trip__c> result = TripManager.getName(tripId);
         return result;
     }
     
-    @AuraEnabled
+    @AuraEnabled(cacheable = true)
     public static Weather_Daily_Forecast__c getTemperature(Id tripId) {
         Trip__c trip = TripManager.getSpacePoint(tripId)[0];
         Id spacePoint = trip.Departure_Space_Point__c;
@@ -32,4 +25,9 @@ public class TouristAssignmentController {
         return temperature;
     }
     
+    @AuraEnabled(cacheable = true)
+    public static Space_Point__c getSpacePoint(Id spacePointId) {
+        Space_Point__c spacePoint = SpacePointManager.getCityAndCountry(spacePointId)[0];        
+        return spacePoint;
+    }
 }

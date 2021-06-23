@@ -16,7 +16,7 @@ public class Constans {
     public static final Integer STATUS_CODE_200 = 200;
     public static final Integer STATUS_CODE_404 = 404;
     public static final Integer STATUS_CODE_409 = 409;
-    public static final String RESPONSE_DATA_DATA = 'Data';
+    public static final String RESPONSE_DATA_DATA = 'data';
     public static final String RESPONSE_DATA_DATETIME = 'datetime';
     public static final String RESPONSE_DATA_TEMP = 'temp';
 }

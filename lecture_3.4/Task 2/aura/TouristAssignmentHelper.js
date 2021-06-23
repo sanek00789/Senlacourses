@@ -16,20 +16,20 @@
         $A.enqueueAction(action); 
     },    
     
-    /*fetchSpacePoint : function (component, event) {        
-        const action = component.get('c.getTrip');
+    getSpacePoint : function (component, event) {        
+        const action = component.get('c.getSpacePoint');
         action.setParams({            
-            tripId: component.get('v.selectedTripId')
+            spacePointId: component.get('v.selectedTrip.Departure_Space_Point__c')
         });
         action.setCallback(this, function(response){
             const state = response.getState();            
             if (state === 'SUCCESS') {
                 var records =response.getReturnValue();
-                component.set('v.selectedTrip', records);                
+                component.set('v.selectedSpacePoint', records);                
             }
         });
         $A.enqueueAction(action);       
-    },*/
+    },
     
     getWeather : function(component) {        
         let action = component.get("c.getTemperature");

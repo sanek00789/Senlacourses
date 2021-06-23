@@ -1,32 +1,42 @@
 <aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="RegTouristsForTripController">	
-    <aura:attribute name="recordId" type="Id" />
-    <aura:attribute name="tourists" type="Tourist__c[]" />
-    <aura:attribute name="mycolumns" type="List"/>
-    <aura:attribute name="Trip__c" type="Trip__c" />    
-    <aura:attribute name="selectedTouristsIds" type="Id[]" />
-    <aura:attribute name="countFreeSeats" type="Decimal" />
-    <aura:attribute name="startDate" type="Date" />
-    <aura:attribute name="today" type="Date"/>
-    <aura:attribute name="showModal" type="Boolean" default="false" />
-    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
-    <aura:attribute name="closeService" type="Boolean" default="false"/>
-    <aura:attribute name="openService" type="Boolean" default="true"/>
+    <aura:attribute name="recordId" type="Id" access="public"/>
+    <aura:attribute name="tourists" type="Tourist__c[]" access="public"/>
+    <aura:attribute name="touristColumns" type="List" access="public"/>
+    <aura:attribute name="Trip__c" type="Trip__c" access="public"/>    
+    <aura:attribute name="selectedTouristsIds" type="Id[]" access="public"/>    
+    <aura:attribute name="today" type="Date" access="public"/>
+    <aura:attribute name="showModal" type="Boolean" default="false" access="public"/>
+    <aura:attribute name="showSpinner" type="Boolean" access="public"/>
+    <aura:attribute name="closeService" type="Boolean" access="public"/>
+    <aura:attribute name="openService" type="Boolean" default="true" access="public"/>
+    <aura:attribute name="record" type="Object" access="public"/>
+    <aura:attribute name="simpleRecord" type="Object" access="public"/>
+    <aura:attribute name="recordError" type="String" access="public"/>
+    <aura:attribute name="title" type="String" default="$Label.c.Confirmation" access="public"/>
+    <aura:attribute name="message" type="String" default="$Label.c.confirmationFlightCreation" access="public"/>
     
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <aura:handler name="seats" value="{!v.countFreeSeats}" action="{!c.doInit}"/>
-    <aura:handler name="start" value="{!v.startDate}" action="{!c.doInit}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
     <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <force:recordData aura:id="recordLoader"
+                      fields="Name,Minimum_Age__c,Number_Free_Seats__c,Start_Date__c"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.simpleRecord}"
+                      targetError="{!v.recordError}"
+                      recordUpdated = "{! c.componentUpdate}"                       
+                      />
     
     <lightning:layout> 
         <lightning:layoutItem size="8">
             <lightning:card title="Free and suitable tourists" 
                             iconName="custom:custom20" 
-                            class="slds-p-horizontal_medium">
+                            class="slds-p-horizontal_medium">                
                 
-                <aura:if isTrue="{!v.openService}">                    
-                    <lightning:datatable data="{! v.tourists }"
-                                         columns="{! v.mycolumns }"                             
+                <aura:if isTrue="{!and(not(empty(v.tourists)), v.openService)}">                    
+                    <lightning:datatable aura:id="touristTable"
+                                         data="{! v.tourists }"
+                                         columns="{! v.touristColumns }"                             
                                          keyField="id"
                                          onrowselection="{! c.getSelectedName }"/>        
                     <lightning:button variant="brand" 
@@ -37,7 +47,7 @@
                                       class="slds-m-around_x-small slds-m-around_medium"/>
                 </aura:if>
                 
-                <aura:if isTrue="{!v.closeService}">
+                <aura:if isTrue="{!not(and(not(empty(v.tourists)), v.openService))}">
                     <div class="slds-modal__content slds-p-around_medium slds-p-left_large">
                         <p class="slds-text-align_center slds-text-heading_medium">{!$Label.c.serviceUnavailable}</p>
                         <p class="slds-text-align_center slds-text-heading_small">{!$Label.c.allSeatsTaken}</p>
@@ -52,22 +62,34 @@
     </lightning:layout>
     
     <aura:if isTrue="{!v.showModal}">
-        <div style="height:640px">
-            <section role="dialog" tabindex="-1" class="slds-modal slds-modal_x-small slds-fade-in-open" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+        <!--<c:confirmationWindow title="{!v.title}" message="{!v.message}"/>-->
+               <div style="height:640px">
+            <section role="dialog" 
+                     tabindex="-1" 
+                     class="slds-modal slds-modal_x-small slds-fade-in-open" 
+                     aria-labelledby="modal-heading-01" 
+                     aria-modal="true" 
+                     aria-describedby="modal-content-id-1">
                 <div class="slds-modal__container">
                     <header class="slds-modal__header">
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Confirmation}</h2>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium slds-p-left_large" id="modal-content-id-1">
                         <p class="slds-text-align_center">{!$Label.c.confirmationFlightCreation}</p>
                     </div>
                     <footer class="slds-modal__footer">
-                        <lightning:button class="slds-button slds-button_brand " name='Yes' label='Yes' onclick='{!c.handleYes}'/>
-                        <lightning:button class="slds-button slds-button_brand" name='No' label='No' onclick='{!c.handleNo}'/>
+                        <lightning:button class="slds-button slds-button_brand " 
+                                          name='Yes' 
+                                          label='Yes' 
+                                          onclick='{!c.handleYes}' />
+                        <lightning:button class="slds-button slds-button_brand" 
+                                          name='No' 
+                                          label='No' 
+                                          onclick='{!c.handleNo}'/>
                     </footer>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
-        </div>
+        </div>		
     </aura:if>
 </aura:component>

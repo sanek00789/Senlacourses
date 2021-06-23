@@ -146,5 +146,14 @@ public class TouristManager {
         ];                
         return result;
     }
+
+    public static List<Tourist__c> getName (String searchKeyWord) {
+        List<Tourist__c> tourists = [
+            SELECT Name            	    
+            FROM Tourist__c
+            WHERE Name LIKE :searchKeyWord
+        ];
+        return tourists;
+    }
     
 }

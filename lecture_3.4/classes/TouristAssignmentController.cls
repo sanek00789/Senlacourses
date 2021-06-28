@@ -8,7 +8,8 @@ public inherited sharing class TouristAssignmentController {
     
     @AuraEnabled
     public static void createFlight(Id touristId, Id tripId) {
-        TouristService.createFlight(touristId, tripId);
+        List<Id> touristIds = new List<Id> {touristId};
+        TouristService.createFlights(touristIds, tripId);        
     }
     
     @AuraEnabled(cacheable = true)

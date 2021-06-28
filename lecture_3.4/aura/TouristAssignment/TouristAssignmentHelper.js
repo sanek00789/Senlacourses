@@ -1,6 +1,6 @@
 ({
 	fetchTrips : function (component) {
-        var url = $A.get('$Resource.TripImage');
+        const url = $A.get('$Resource.TripImage');
         component.set('v.backgroundImageURL', url);
         const action = component.get('c.getTripsById');
         action.setParams({
@@ -16,7 +16,7 @@
         $A.enqueueAction(action); 
     },    
     
-    getSpacePoint : function (component, event) {        
+    getSpacePoint : function (component) {        
         const action = component.get('c.getSpacePoint');
         action.setParams({            
             spacePointId: component.get('v.selectedTrip.Departure_Space_Point__c')
@@ -24,7 +24,7 @@
         action.setCallback(this, function(response){
             const state = response.getState();            
             if (state === 'SUCCESS') {
-                var records =response.getReturnValue();
+                const records =response.getReturnValue();
                 component.set('v.selectedSpacePoint', records);                
             }
         });

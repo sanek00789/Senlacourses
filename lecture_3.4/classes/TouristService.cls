@@ -64,13 +64,5 @@ public class TouristService {
             newFlights.add(newFlight);
         }
         insert newFlights;
-    }
-    
-    public static void createFlight(Id touristId, Id tripId) {          
-        Flight__c newFlight = new Flight__c();                                
-        newFlight.Trip__c = tripId;            
-        newFlight.Tourist__c = touristId;
-        newFlight.Status__c = Constans.FLIGHT_STATUS_REQUSTED; 
-        insert newFlight;
-    }
+    }   
 }

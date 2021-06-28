@@ -1,20 +1,20 @@
 <aura:component implements="flexipage:availableForAllPageTypes" access="global" controller="TouristAssignmentController" >
     <aura:attribute name="selectedId" type="String" access="public"/>
-    <aura:attribute name="trips" type="Trip__c[]" access="public"/>
-    <aura:attribute name="selectedTripId" type="String" access="public"/>
-    <aura:attribute name="showModal" type="Boolean" default="false" access="public"/>
-    <aura:attribute name="mapMarkers" type="Object" access="public"/>
-    <aura:attribute name="showDetails" type="Boolean" default="false" access="public"/>
-    <aura:attribute name="selectedSpacePoint" type="Space_Point__c" access="public"/>
-    <aura:attribute name="selectedTrip" type="Trip__c" access="public"/>
-    <aura:attribute name="averageTemperature" type="Decimal" access="public"/>
-    <aura:attribute name="backgroundImageURL" type="String" default="" access="public"/>
-    <aura:attribute name="title" type="String" default="{!$Label.c.Confirmation}" access="public"/>
-    <aura:attribute name="message" type="String" default="{!$Label.c.confirmationFlightCreation}" access="public"/>
+    <aura:attribute name="trips" type="Trip__c[]" access="private"/>
+    <aura:attribute name="selectedTripId" type="String" access="private"/>
+    <aura:attribute name="showModal" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="mapMarkers" type="Object" access="private"/>
+    <aura:attribute name="showDetails" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="selectedSpacePoint" type="Space_Point__c" access="private"/>
+    <aura:attribute name="selectedTrip" type="Trip__c" access="private"/>
+    <aura:attribute name="averageTemperature" type="Decimal" access="private"/>
+    <aura:attribute name="backgroundImageURL" type="String" default="" access="private"/>
+    <aura:attribute name="title" type="String" default="{!$Label.c.Confirmation}" access="private"/>
+    <aura:attribute name="message" type="String" default="{!$Label.c.confirmationFlightCreation}" access="private"/>
     
     <aura:handler name="change" value="{!v.selectedId}" action="{!c.fetchTrips}"/>
-    <aura:handler name="clickYes" event="c:ConfirmationWindowClickYes" action="{!c.handleYes}"/>
-    <aura:handler name="clickNo" event="c:ConfirmationWindowClickNo" action="{!c.handleNo}"/>
+    <aura:handler name="clickYes" event="c:ConfirmationWindowClickYes" action="{!c.onSubmit}"/>
+    <aura:handler name="clickNo" event="c:ConfirmationWindowClickNo" action="{!c.onCancel}"/>
     
     <lightning:layout> 
         <lightning:layoutItem size="12">

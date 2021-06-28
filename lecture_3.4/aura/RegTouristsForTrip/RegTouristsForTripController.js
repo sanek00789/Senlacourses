@@ -1,18 +1,16 @@
 ({    
     doInit : function(component, event, helper) {        
         helper.fetchTourist(component, event);
-        helper.createTable(component, event);
+        helper.createTable(component, event);        
     },
     
-    componentUpdate: function(component, event, helper) {
-        helper.fetchTourist(component, event);
+    onRecordUpdated: function(component, event, helper) {
+        helper.fetchTourist(component, event);        
         const countFreeSeats = component.get('v.simpleRecord.Number_Free_Seats__c');
         const startDate = component.get('v.simpleRecord.Start_Date__c');                
-        const today = $A.localizationService.formatDate(new Date(), 'YYYY-MM-DD');
-        //const openService = (countFreeSeats >= 0 && today < startDate && !(Array.isArray(tourists) && !tourists.length));
+        const today = $A.localizationService.formatDate(new Date(), 'YYYY-MM-DD');        
         const openService = (countFreeSeats <= 0 || today > startDate);
-        component.set("v.openService", !openService);
-        component.set("v.closeService", openService);
+        component.set("v.openService", !openService);        
     },
     
     getSelectedName: function (component, event) {
@@ -35,7 +33,7 @@
         }
     },
     
-    handleYes : function(component, event, helper) {
+    onSubmit : function(component, event, helper) {
         const hideModal = component.get('v.showModal');
         const action = component.get('c.createFlights');
         action.setParams({
@@ -45,18 +43,18 @@
         action.setCallback(this, function(response){
             const state = response.getState();
             if (state === 'SUCCESS') {
-                var records =response.getReturnValue();
+                const records =response.getReturnValue();
+                component.set('v.showModal', !hideModal);
+                const title = $A.get("$Label.c.Successfully");
+                const message = $A.get("$Label.c.flightsCreatedSuccessfully");
+                const type = 'success'
+                helper.showToast(title, message, type);  
             }
         });
-        $A.enqueueAction(action);
-        component.set('v.showModal', !hideModal);
-        const title = $A.get("$Label.c.Successfully");
-        const message = $A.get("$Label.c.flightsCreatedSuccessfully");
-        const type = 'success'
-        helper.showToast(title, message, type);        
+        $A.enqueueAction(action);              
     },
     
-    handleNo : function(component) {
+    onCancel : function(component) {
         const showModal = component.get('v.showModal');
         component.set('v.showModal', !showModal);
     },    
@@ -67,5 +65,5 @@
     
     hideSpinner : function(component){  
         component.set("v.showSpinner", false);
-    }
+    }    
 })

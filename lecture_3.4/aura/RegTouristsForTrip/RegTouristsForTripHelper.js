@@ -1,17 +1,17 @@
 ({
-    fetchTourist : function (component) {        
-        const action = component.get('c.getSuitableForTrip');
+    fetchTourist : function (component, offSetCount) {        
+        const action = component.get('c.getSuitableForTrip');         
         action.setParams({
-            tripId: component.get('v.recordId')
+            tripId: component.get('v.recordId'),            
         });
         action.setCallback(this, function(response){
-            const state = response.getState();
+            const state = response.getState();            
             if (state === 'SUCCESS') {
                 const records =response.getReturnValue();
                 records.forEach(function(record){
                     record.linkName = '/'+ record.Id;
-                });
-                component.set('v.tourists', records);                
+                });                 
+                component.set('v.tourists', records);				               
             }
         });
         $A.enqueueAction(action);        

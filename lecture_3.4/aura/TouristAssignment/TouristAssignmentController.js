@@ -27,7 +27,7 @@
         
     },
     
-    handleYes : function(component, event, helper) {
+    onSubmit : function(component, event, helper) {
         const hideModal = component.get('v.showModal');
         const action = component.get('c.createFlight');
         action.setParams({
@@ -37,7 +37,7 @@
         action.setCallback(this, function(response){
             const state = response.getState();
             if (state === 'SUCCESS') {
-                var records =response.getReturnValue();
+                const records =response.getReturnValue();
             }
         });
         $A.enqueueAction(action);
@@ -45,7 +45,7 @@
         helper.showToastSuccess(component);
     },
     
-    handleNo : function(component, event, helper) {
+    onCancel : function(component) {
         const showModal = component.get('v.showModal');
         component.set('v.showModal', !showModal);
     }

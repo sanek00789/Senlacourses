@@ -1,5 +1,5 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="TouristAssignmentController">
-	<aura:attribute name="selectedId" type="String" default="a045g000000uyczAAA" access="public"/>
+	<aura:attribute name="selectedId" type="String" access="public"/>
     <aura:attribute name="trips" type="Trip__c[]" access="private"/>
     <aura:attribute name="selectedTripId" type="String" access="private"/>
     <aura:attribute name="showModal" type="Boolean" default="false" access="private"/>

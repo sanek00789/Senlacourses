@@ -20,11 +20,8 @@
                     City: selectedTrip.Name                    
                 }
             }
-        ]);
-        helper.getWeather(component, event);
-        helper.getSpacePoint(component, event);
+        ]);		       
         component.set("v.showDetails", true);
-        
     },
     
     onSubmit : function(component, event, helper) {

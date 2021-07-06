@@ -1,4 +1,4 @@
-public class TouristService {
+public without sharing class TouristService {
     
     public static void markDuplicates(List<Tourist__c> newTourists) {          
         if (newTourists == null || newTourists.isEmpty()) return;

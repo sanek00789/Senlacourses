@@ -20,11 +20,8 @@
                     City: selectedTrip.Name                    
                 }
             }
-        ]);
-        helper.getWeather(component, event);
-        helper.getSpacePoint(component, event);
+        ]);		       
         component.set("v.showDetails", true);
-        
     },
     
     onSubmit : function(component, event, helper) {
@@ -35,7 +32,7 @@
             tripId: component.get('v.selectedTripId')
         });
         action.setCallback(this, function(response){
-            const state = response.getState();
+            const state = response.getState();            
             if (state === 'SUCCESS') {
                 const records =response.getReturnValue();
             }

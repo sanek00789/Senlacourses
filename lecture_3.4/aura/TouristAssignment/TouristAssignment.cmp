@@ -1,13 +1,11 @@
-<aura:component implements="flexipage:availableForAllPageTypes" access="global" controller="TouristAssignmentController" >
-    <aura:attribute name="selectedId" type="String" access="public"/>
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" controller="TouristAssignmentController" >
+    <aura:attribute name="selectedId" type="String" default="" access="public"/>
     <aura:attribute name="trips" type="Trip__c[]" access="private"/>
     <aura:attribute name="selectedTripId" type="String" access="private"/>
     <aura:attribute name="showModal" type="Boolean" default="false" access="private"/>
     <aura:attribute name="mapMarkers" type="Object" access="private"/>
     <aura:attribute name="showDetails" type="Boolean" default="false" access="private"/>
-    <aura:attribute name="selectedSpacePoint" type="Space_Point__c" access="private"/>
-    <aura:attribute name="selectedTrip" type="Trip__c" access="private"/>
-    <aura:attribute name="averageTemperature" type="Decimal" access="private"/>
+    <aura:attribute name="selectedTrip" type="Trip__c" access="public"/>
     <aura:attribute name="backgroundImageURL" type="String" default="" access="private"/>
     <aura:attribute name="title" type="String" default="{!$Label.c.Confirmation}" access="private"/>
     <aura:attribute name="message" type="String" default="{!$Label.c.confirmationFlightCreation}" access="private"/>
@@ -18,14 +16,12 @@
     
     <lightning:layout> 
         <lightning:layoutItem size="12">
-            <lightning:card class="slds-p-horizontal_medium slds-m-vertical_medium"> 
-                <c:LookupField 
-                               objectAPIName="Tourist__c" 
+            <lightning:card class="slds-p-horizontal_medium slds-m-vertical_medium">                
+                <c:LookupField objectAPIName="Tourist__c" 
                                label="Relate to"
-                               returnFields="['Name','Age__c','Gender__c']" 
-                               queryFields="['Name','Age__c','Gender__c']"
+                               returnFields="['Name','Age__c','Gender__c']"                               
                                selectedId="{!v.selectedId}"
-                               filter="CreatedDate > 2001-01-01T00:00:01Z"/> 
+                               filter="CreatedDate > 2001-01-01T00:00:01Z"/>
             </lightning:card>         
         </lightning:layoutItem>        
     </lightning:layout>
@@ -48,26 +44,12 @@
     </lightning:layout>
     
     <aura:if isTrue="{!v.showDetails}">
-        <lightning:card class="slds-p-horizontal_medium slds-p-around_small slds-m-vertical_medium" title="Trip Details" >
+        <lightning:card class="slds-p-horizontal_x-large slds-p-around_small slds-m-vertical_medium" title="Trip Details" >
             <lightning:layout>
-                <lightning:layoutItem  size="5">
-                    <c:TripDetails tripName="{!v.selectedTrip.Name}"
-                                   startDate="{!v.selectedTrip.Start_Date__c}"
-                                   endDate="{!v.selectedTrip.End_Date__c}"
-                                   minimumAge="{!v.selectedTrip.Minimum_Age__c}"
-                                   seats="{!v.selectedTrip.Seats__c}"
-                                   departureSpacePoint="{!v.selectedSpacePoint.City__c}"
-                                   />                
+                <lightning:layoutItem  size="10">
+                    <c:TripDetails selectedTrip="{!v.selectedTrip}"/>
                 </lightning:layoutItem>
                 
-                <lightning:layoutItem padding="around-small" size="5">
-                    <lightning:card>
-                        <div class="slds-card slds-box">
-                            <h4 class="slds-text-align_center slds-truncate">{!$Label.c.TemperatureToday}: </h4>
-                            <div class="slds-text-align_center slds-truncate" style="font-size: 3em" ><p>  {!v.averageTemperature} C </p> </div>                   
-                        </div>
-                    </lightning:card>
-                </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="2">
                     <lightning:card>
                         <div class="slds-align_absolute-center" >

@@ -1,4 +1,4 @@
-<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="RegTouristsForTripController">	
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="RegTouristsForTripController">	
     <aura:attribute name="recordId" type="Id" access="public"/>
     <aura:attribute name="tourists" type="Tourist__c[]" access="private"/>
     <aura:attribute name="touristColumns" type="List" access="private"/>
@@ -29,7 +29,7 @@
                       />
     
     <lightning:layout> 
-        <lightning:layoutItem size="8">
+        <lightning:layoutItem>
             <lightning:card title="Free and suitable tourists" 
                             iconName="custom:custom20" 
                             class="slds-p-horizontal_medium">                

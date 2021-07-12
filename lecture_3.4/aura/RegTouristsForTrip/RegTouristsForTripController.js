@@ -49,6 +49,12 @@
                 const message = $A.get("$Label.c.flightsCreatedSuccessfully");
                 const type = 'success'
                 helper.showToast(title, message, type);  
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.flightCreationError");
+                const type = 'error';
+                helper.showToast(title, message, type);
             }
         });
         $A.enqueueAction(action);              

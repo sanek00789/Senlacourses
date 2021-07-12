@@ -5,13 +5,19 @@
             tripId: component.get('v.recordId'),            
         });
         action.setCallback(this, function(response){
-            const state = response.getState();            
+            const state = response.getState();           
             if (state === 'SUCCESS') {
                 const records =response.getReturnValue();
                 records.forEach(function(record){
                     record.linkName = '/'+ record.Id;
                 });                 
                 component.set('v.tourists', records);				               
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.touristSearchError");
+                const type = 'error';
+                this.showToast(title, message, type);
             }
         });
         $A.enqueueAction(action);        

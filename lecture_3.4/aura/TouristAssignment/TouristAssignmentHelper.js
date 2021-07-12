@@ -11,18 +11,24 @@
             if (state === 'SUCCESS') {
                 const records =response.getReturnValue();                
                 component.set('v.trips', records);
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.tripSearchError");
+                const type = 'error';
+                this.showToast(title, message, type);
             }
         });
         $A.enqueueAction(action); 
     },  
     
-    showToastSuccess: function (component) {
+    showToast: function (title, message, type) {
        const toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
-            "title" : $A.get("$Label.c.Successfully"),
-            "type" : "success",
-            "message" : $A.get("$Label.c.flightsCreatedSuccessfully")
+            "title" : title,
+            "type" : type,
+            "message" : message
         });
         toastEvent.fire();
     }
-})
+});

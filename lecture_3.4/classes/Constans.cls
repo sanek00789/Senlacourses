@@ -19,4 +19,5 @@ public class Constans {
     public static final String RESPONSE_DATA_DATA = 'data';
     public static final String RESPONSE_DATA_DATETIME = 'datetime';
     public static final String RESPONSE_DATA_TEMP = 'temp';
+    public static final String GENERAL_ERROR = System.Label.General_Error;
 }

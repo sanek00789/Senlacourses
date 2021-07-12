@@ -70,4 +70,30 @@ public class TripManager {
             WHERE Id  =: tripId];        
         return trips;
     }
+    
+    public static List<Trip__c> getSuitableTrips(Id touristId) { 
+        if (touristId == null) {
+            return new List<Trip__c>();
+        }
+        Tourist__c tourist = TouristManager.getByIds(new Set<Id>{touristId})[0];
+        List<Trip__c> trips = [
+            SELECT Id,
+                	Name,
+            		Minimum_Age__c,
+            		Start_Date__c,            		
+            		Seats__c,
+            		End_Date__c,
+            		Departure_Space_Point__c    
+            FROM Trip__c
+            WHERE Id NOT IN (
+                SELECT Trip__c 
+                FROM Flight__c 
+                WHERE Tourist__c = :tourist.Id) 
+                AND
+                    Minimum_Age__c <= :tourist.Age__c
+                AND 
+                    Start_Date__c >= :Date.today()
+        ];     
+        return trips;
+    }
 }

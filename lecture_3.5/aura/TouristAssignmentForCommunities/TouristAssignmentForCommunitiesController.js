@@ -33,13 +33,24 @@
         });
         action.setCallback(this, function(response){
             const state = response.getState();
+            alert(state)
             if (state === 'SUCCESS') {
-                const records =response.getReturnValue();
+                const records = response.getReturnValue();
+                const title = $A.get("$Label.c.Successfully");
+                const message = $A.get("$Label.c.flightsCreatedSuccessfully");
+                const type = 'success'
+                helper.showToast(title, message, type);                
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                console.log(errors)
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.flightCreationError");
+                const type = 'error';
+                helper.showToast(title, message, type);
             }
+            component.set('v.showModal', !hideModal);            
         });
-        $A.enqueueAction(action);
-        component.set('v.showModal', !hideModal);
-        helper.showToastSuccess(component);
+        $A.enqueueAction(action);        
     },
     
     onCancel : function(component) {

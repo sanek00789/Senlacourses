@@ -9,6 +9,12 @@
             if (state === 'SUCCESS') {
                 const records =response.getReturnValue();
                 component.set('v.selectedSpacePoint', records);                
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.spaisPointSearchError");
+                const type = 'error';
+                this.showToast(title, message, type);
             }
         });
         $A.enqueueAction(action);       
@@ -23,8 +29,24 @@
             let state = response.getState();
             if (state === "SUCCESS") {
                 component.set("v.averageTemperature", response.getReturnValue().Average_Temperature__c);
-            }             
+            } else if (state === "ERROR") {
+                const errors = action.getError();
+                const title = $A.get("$Label.c.Error");
+                const message = (errors.length) ? errors[0].message : $A.get("$Label.c.temperatureSearchError");
+                const type = 'error';
+                this.showToast(title, message, type);
+            }            
         });
         $A.enqueueAction(action);
-    }        
+    },
+  	
+	showToast: function (title, message, type) {
+       const toastEvent = $A.get("e.force:showToast");
+        toastEvent.setParams({
+            "title" : title,
+            "type" : type,
+            "message" : message
+        });
+        toastEvent.fire();
+    }  
 })
